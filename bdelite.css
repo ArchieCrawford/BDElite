@@ -203,6 +203,53 @@ a { color: var(--red); }
 .pillar h3 { font-family: var(--font-accent); font-size: 1.45rem; letter-spacing: 0.1em; color: var(--red); margin-bottom: 0.4rem; }
 .pillar p { color: var(--gray); font-size: 0.95rem; }
 
+/* ---------- 2027 Season ---------- */
+.season {
+  max-width: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(232, 20, 28, 0.14), transparent 70%),
+    var(--black);
+  border-top: 1px solid rgba(232, 20, 28, 0.3);
+}
+.season > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+.season-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-top: 2rem; }
+.season-card {
+  background: var(--black-3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 3px solid var(--red);
+  padding: 1.6rem 1.4rem;
+}
+.season-card-highlight {
+  background: linear-gradient(180deg, #1f0608, var(--black-3));
+  border: 1px solid rgba(232, 20, 28, 0.6);
+  border-top: 3px solid var(--red);
+  box-shadow: 0 10px 30px rgba(232, 20, 28, 0.15);
+}
+.season-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.season-card h3 { font-family: var(--font-accent); font-size: 1.4rem; letter-spacing: 0.08em; color: var(--red); margin-bottom: 0.5rem; }
+.season-card p { color: var(--gray); font-size: 0.95rem; margin-bottom: 0.5rem; }
+.season-card strong { color: var(--white); }
+.season-card .season-price {
+  font-family: var(--font-display); font-size: 2.8rem; color: var(--white) !important;
+  line-height: 1.1; margin: 0.6rem 0 !important;
+  text-shadow: 0 0 20px var(--red-glow);
+}
+.season-card .season-price span { font-family: var(--font-accent); font-size: 1.1rem; letter-spacing: 0.1em; color: var(--red); margin-left: 0.3rem; }
+.season-letter {
+  margin-top: 2.5rem; text-align: center;
+  border: 1px solid rgba(232, 20, 28, 0.35);
+  padding: 2rem 1.6rem;
+  background: var(--black-2);
+}
+.season-quote {
+  font-family: var(--font-script); font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  color: var(--silver); max-width: 760px; margin: 0 auto 1.6rem; line-height: 1.5;
+}
+.season-leaders { display: flex; flex-wrap: wrap; justify-content: center; gap: 2.5rem; margin-bottom: 1.6rem; }
+.leader { display: flex; flex-direction: column; }
+.leader-name { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); letter-spacing: 0.04em; }
+.leader-role { font-family: var(--font-accent); letter-spacing: 0.2em; color: var(--red); font-size: 0.95rem; }
+
 /* ---------- Tryouts form ---------- */
 .tryout-script {
   text-align: center; font-family: var(--font-script); font-size: clamp(1.4rem, 4vw, 2rem);
