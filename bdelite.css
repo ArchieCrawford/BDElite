@@ -162,9 +162,15 @@ a { color: var(--red); }
 .program-copy strong { color: var(--white); }
 .gear-note { font-size: 0.9rem !important; color: var(--gray) !important; border-left: 3px solid var(--red); padding-left: 0.8rem; }
 .gear-note a { color: var(--red); text-decoration: none; }
-.program-flyer img {
-  border-radius: 10px; border: 1px solid rgba(232, 20, 28, 0.4);
-  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(232, 20, 28, 0.15);
+.program-logo { display: flex; justify-content: center; }
+.program-logo img {
+  width: min(100%, 440px);
+  filter: drop-shadow(0 0 30px rgba(232, 20, 28, 0.45));
+  animation: pulse 3.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 22px rgba(232, 20, 28, 0.35)); }
+  50% { filter: drop-shadow(0 0 48px rgba(232, 20, 28, 0.7)); }
 }
 
 /* ---------- Teams ---------- */
@@ -228,7 +234,7 @@ a { color: var(--red); }
   text-align: center; padding: 3rem 1.2rem;
   border-top: 2px solid var(--red); background: var(--black-2);
 }
-.footer-logo { height: 80px; width: auto; margin: 0 auto 0.6rem; }
+.footer-logo { height: 120px; width: auto; margin: 0 auto 0.4rem; filter: drop-shadow(0 0 18px rgba(232, 20, 28, 0.45)); }
 .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--white); }
 .footer-brand em { color: var(--red); font-style: normal; }
 .footer-line { color: var(--gray); margin-top: 0.4rem; }
@@ -253,5 +259,5 @@ a { color: var(--red); }
   .nav-cta { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-scroll { animation: none; }
+  .hero-scroll, .program-logo img { animation: none; }
 }

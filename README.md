@@ -6,7 +6,7 @@ Static site — no build step. `index.html` is the landing page (Three.js animat
 
 ## Deploying (Netlify)
 
-`netlify.toml` is included. In Netlify: **Add new site → Import an existing project → GitHub → this repo → Deploy**. Then attach the domain under **Domain management** (bdelite.com).
+`netlify.toml` is included. In Netlify: **Add new site → Import an existing project → GitHub → this repo → Deploy**. Then attach the domain under **Domain management** (www.bdel1te.com).
 
 The tryout-alert form uses Netlify Forms (form name `bdelite-tryouts`). Enable Forms on the site and add an email notification under **Project configuration → Notifications**.
 
