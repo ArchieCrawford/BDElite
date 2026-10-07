@@ -1,5 +1,9 @@
-// Three.js hero background: a wireframe football spinning through a field of red embers.
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+// Three.js hero background: a real football model spinning through a field of red embers.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const MODEL_URL = 'assets/american-football.glb';
+const BALL_LENGTH = 7; // world units, long axis
 
 const canvas = document.getElementById('bg3d');
 const hero = document.getElementById('hero');
@@ -15,44 +19,58 @@ try {
   throw err;
 }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.4;
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x070708, 0.045);
+scene.fog = new THREE.FogExp2(0x070708, 0.04);
 
 const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
 camera.position.set(0, 0, 11);
 
-// --- Football: an elongated sphere rendered as glowing red wire + faint inner shell
+// --- Lighting: soft fill, a white key from above, red rims from the sides
+scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+scene.add(new THREE.HemisphereLight(0xffffff, 0x3a0609, 1.4));
+const key = new THREE.DirectionalLight(0xffffff, 4.5);
+key.position.set(4, 6, 8);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xffd9c2, 1.6);
+fill.position.set(-5, -2, 6);
+scene.add(fill);
+const rimL = new THREE.PointLight(0xe8141c, 140, 40);
+rimL.position.set(-7, 2, 3);
+scene.add(rimL);
+const rimR = new THREE.PointLight(0xff5a2a, 100, 40);
+rimR.position.set(7, -3, 4);
+scene.add(rimR);
+
+// --- Football model
 const ballGroup = new THREE.Group();
-const ballGeo = new THREE.SphereGeometry(2.4, 18, 12);
-ballGeo.scale(1.75, 1, 1);
-
-const wire = new THREE.LineSegments(
-  new THREE.EdgesGeometry(ballGeo, 1),
-  new THREE.LineBasicMaterial({ color: 0xe8141c, transparent: true, opacity: 0.75 })
-);
-ballGroup.add(wire);
-
-const shell = new THREE.Mesh(
-  ballGeo,
-  new THREE.MeshBasicMaterial({ color: 0x3a0609, transparent: true, opacity: 0.35, side: THREE.BackSide })
-);
-ballGroup.add(shell);
-
-// Laces: a seam line plus short cross-stitches along the top of the ball
-const laceMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 });
-const seam = new THREE.BufferGeometry().setFromPoints([
-  new THREE.Vector3(-1.6, 2.42, 0), new THREE.Vector3(1.6, 2.42, 0),
-]);
-ballGroup.add(new THREE.Line(seam, laceMat));
-for (let i = -1.2; i <= 1.2; i += 0.4) {
-  const stitch = new THREE.BufferGeometry().setFromPoints([
-    new THREE.Vector3(i, 2.45, -0.35), new THREE.Vector3(i, 2.45, 0.35),
-  ]);
-  ballGroup.add(new THREE.Line(stitch, laceMat));
-}
 ballGroup.rotation.z = -0.35;
 scene.add(ballGroup);
+
+new GLTFLoader().load(
+  MODEL_URL,
+  (gltf) => {
+    const model = gltf.scene;
+    // Center the model and scale its long axis to BALL_LENGTH
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const s = BALL_LENGTH / Math.max(size.x, size.y, size.z);
+    model.position.sub(center).multiplyScalar(s);
+    model.scale.setScalar(s);
+    model.traverse((o) => {
+      if (o.isMesh && o.material) {
+        o.material.envMapIntensity = 1;
+        o.material.needsUpdate = true;
+      }
+    });
+    ballGroup.add(model);
+  },
+  undefined,
+  (err) => console.warn('Football model failed to load; showing embers only.', err)
+);
 
 // --- Embers: additive red/orange points drifting upward
 const COUNT = 1100;
@@ -78,7 +96,9 @@ const emberSprite = (() => {
   grad.addColorStop(1, 'rgba(232,20,28,0)');
   g.fillStyle = grad;
   g.fillRect(0, 0, 64, 64);
-  return new THREE.CanvasTexture(c);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
 })();
 
 const embers = new THREE.Points(
@@ -117,8 +137,9 @@ const clock = new THREE.Clock();
 function frame() {
   const t = clock.getElapsedTime();
 
-  ballGroup.rotation.y = t * 0.35;
-  ballGroup.rotation.x = Math.sin(t * 0.4) * 0.25;
+  // Spin around the ball's long axis, with a slow tumble and gentle float
+  ballGroup.rotation.x = t * 0.6;
+  ballGroup.rotation.y = Math.sin(t * 0.25) * 0.35;
   ballGroup.position.y = Math.sin(t * 0.8) * 0.25;
 
   const pos = emberGeo.attributes.position.array;
