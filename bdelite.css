@@ -289,6 +289,30 @@ a { color: var(--red); }
 .footer-line a:hover { text-decoration: underline; }
 .footer-small { font-size: 0.85rem; }
 
+/* ---------- Roster pages ---------- */
+a.team { text-decoration: none; display: block; }
+.team-cta { display: block; margin-top: 0.6rem; font-family: var(--font-accent); letter-spacing: 0.12em; font-size: 0.95rem; color: var(--silver); }
+a.team:hover .team-cta { color: var(--red); }
+.roster-hero { min-height: 60vh; }
+.roster-title { font-size: clamp(3rem, 12vw, 7rem); }
+.roster-empty {
+  text-align: center; max-width: 760px; margin: 0 auto 3rem;
+  background: var(--black-3); border: 1px solid rgba(232, 20, 28, 0.5);
+  padding: 2.4rem 1.6rem; box-shadow: 0 12px 40px rgba(232, 20, 28, 0.12);
+}
+.roster-empty-icon { font-size: 2.6rem; margin-bottom: 0.4rem; }
+.roster-empty h2 { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--white); margin-bottom: 0.8rem; }
+.roster-empty p { color: var(--gray); margin-bottom: 1.6rem; }
+.roster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.9rem; max-width: 1000px; margin: 0 auto; }
+.roster-slot {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.2rem;
+  aspect-ratio: 1; background: var(--black-2);
+  border: 1px dashed rgba(232, 20, 28, 0.45);
+}
+.roster-num { font-family: var(--font-display); font-size: 2rem; color: rgba(232, 20, 28, 0.6); }
+.roster-name { font-family: var(--font-accent); letter-spacing: 0.3em; color: var(--gray); font-size: 0.85rem; }
+.roster-note { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 1rem; }
+
 /* ---------- Thanks page ---------- */
 .thanks-hero { min-height: 100vh; }
 
