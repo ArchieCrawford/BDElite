@@ -68,13 +68,13 @@ a { color: var(--red); }
 .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
 .brand-logo { height: 42px; width: auto; }
 .brand-name {
-  font-family: var(--font-display); font-size: 1.3rem; color: var(--white); letter-spacing: 0.05em;
+  font-family: var(--font-display); font-size: 1.3rem; color: var(--white); letter-spacing: 0.05em; white-space: nowrap;
 }
 .brand-name em { color: var(--red); font-style: normal; }
-.nav-links { display: flex; gap: 1.4rem; margin-left: auto; }
+.nav-links { display: flex; gap: 1.1rem; margin-left: auto; }
 .nav-links a {
-  color: var(--silver); text-decoration: none;
-  font-family: var(--font-accent); font-size: 1.05rem; letter-spacing: 0.1em;
+  color: var(--silver); text-decoration: none; white-space: nowrap;
+  font-family: var(--font-accent); font-size: 1.05rem; letter-spacing: 0.08em;
 }
 .nav-links a:hover { color: var(--red); }
 .nav-links .nav-home { color: var(--gray); }
@@ -312,6 +312,27 @@ a.team:hover .team-cta { color: var(--red); }
 .roster-num { font-family: var(--font-display); font-size: 2rem; color: rgba(232, 20, 28, 0.6); }
 .roster-name { font-family: var(--font-accent); letter-spacing: 0.3em; color: var(--gray); font-size: 0.85rem; }
 .roster-note { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 1rem; }
+
+/* ---------- Sponsors ---------- */
+.sponsor-grid {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.2rem;
+  max-width: 1000px !important;
+}
+.sponsor {
+  display: flex; align-items: center; justify-content: center;
+  width: 240px; height: 130px; padding: 1rem 1.3rem;
+  background: var(--black); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+a.sponsor:hover { transform: translateY(-3px); border-color: var(--red); box-shadow: 0 10px 30px var(--red-glow); }
+.sponsor img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.sponsor-placeholder {
+  border-style: dashed; border-color: rgba(232, 20, 28, 0.45); width: min(100%, 420px);
+}
+.sponsor-placeholder span { font-family: var(--font-accent); letter-spacing: 0.2em; color: var(--gray); font-size: 1rem; }
+.sponsor-note { text-align: center; color: var(--gray); font-size: 0.9rem; margin-top: 1.6rem; }
+.sponsor-note a { color: var(--red); text-decoration: none; }
+.sponsor-note a:hover { text-decoration: underline; }
 
 /* ---------- Thanks page ---------- */
 .thanks-hero { min-height: 100vh; }
