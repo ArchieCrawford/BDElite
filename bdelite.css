@@ -249,6 +249,8 @@ a { color: var(--red); }
 .leader { display: flex; flex-direction: column; }
 .leader-name { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); letter-spacing: 0.04em; }
 .leader-role { font-family: var(--font-accent); letter-spacing: 0.2em; color: var(--red); font-size: 0.95rem; }
+.leader-email { font-size: 0.85rem; color: var(--gray); text-decoration: none; margin-top: 0.2rem; }
+.leader-email:hover { color: var(--red); text-decoration: underline; }
 
 /* ---------- Tryouts form ---------- */
 .tryout-script {
