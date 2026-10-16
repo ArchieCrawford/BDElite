@@ -342,6 +342,41 @@ a.sponsor:hover { transform: translateY(-3px); border-color: var(--red); box-sha
 .sponsor-note a { color: var(--red); text-decoration: none; }
 .sponsor-note a:hover { text-decoration: underline; }
 
+/* ---------- Schedule ---------- */
+.schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1000px; margin: 0 auto; }
+.event-tile {
+  position: relative; display: block; overflow: hidden;
+  border: 1px solid rgba(232, 20, 28, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.event-tile img { width: 100%; height: auto; display: block; transition: transform 0.3s ease; }
+.event-tile:hover { transform: translateY(-5px); box-shadow: 0 16px 40px var(--red-glow); }
+.event-tile:hover img { transform: scale(1.04); }
+.event-tile-cta {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 0.55rem;
+  background: linear-gradient(180deg, transparent, rgba(7, 7, 8, 0.95));
+  font-family: var(--font-accent); letter-spacing: 0.15em; font-size: 1rem; color: var(--white); text-align: center;
+  opacity: 0; transform: translateY(6px); transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.event-tile:hover .event-tile-cta { opacity: 1; transform: translateY(0); }
+.schedule-list { list-style: none; max-width: 760px; margin: 2.5rem auto 0; border-top: 1px solid rgba(232, 20, 28, 0.3); }
+.schedule-list li {
+  display: grid; grid-template-columns: 110px 1fr auto; gap: 1rem; align-items: baseline;
+  padding: 0.75rem 0.4rem; border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.sl-date { font-family: var(--font-accent); letter-spacing: 0.1em; color: var(--red); font-size: 1.05rem; }
+.sl-name { color: var(--white); font-weight: 600; }
+.sl-name em { color: var(--gray); font-style: normal; font-weight: 400; font-size: 0.85rem; }
+.sl-loc { color: var(--gray); font-size: 0.9rem; }
+#schedule .tech-powered { gap: 0.9rem; }
+.season-card .btn { margin-top: 0.4rem; font-size: 1rem; padding: 0.5rem 1.1rem; }
+@media (max-width: 520px) {
+  .schedule-list li { grid-template-columns: 90px 1fr; }
+  .sl-loc { grid-column: 2; }
+  .event-tile-cta { opacity: 1; transform: none; position: static; background: var(--black-3); border-top: 1px solid rgba(232, 20, 28, 0.4); }
+}
+
 /* ---------- Thanks page ---------- */
 .thanks-hero { min-height: 100vh; }
 
