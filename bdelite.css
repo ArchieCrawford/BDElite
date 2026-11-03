@@ -173,6 +173,8 @@ a { color: var(--red); }
   50% { filter: drop-shadow(0 0 48px rgba(232, 20, 28, 0.7)); }
 }
 
+.program-quote { text-align: left; margin: 0; font-size: clamp(1.25rem, 2.8vw, 1.7rem); }
+
 /* ---------- Teams ---------- */
 .teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; max-width: 800px !important; }
 .team {
