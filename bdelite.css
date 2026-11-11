@@ -315,6 +315,11 @@ a.team:hover .team-cta { color: var(--red); }
 }
 .roster-num { font-family: var(--font-display); font-size: 2rem; color: rgba(232, 20, 28, 0.6); }
 .roster-name { font-family: var(--font-accent); letter-spacing: 0.3em; color: var(--gray); font-size: 0.85rem; }
+.roster-slot.filled { border-style: solid; border-color: rgba(232, 20, 28, 0.7); background: linear-gradient(180deg, var(--black-3), var(--black)); gap: 0.1rem; padding: 0.4rem; }
+.roster-slot.filled .roster-num { color: var(--red); }
+.roster-player { font-family: var(--font-accent); letter-spacing: 0.08em; color: var(--white); font-size: 1.05rem; text-align: center; line-height: 1.15; }
+.roster-meta { font-size: 0.72rem; color: var(--gray); text-align: center; }
+.is-hidden { display: none !important; }
 .roster-note { text-align: center; color: var(--gray); font-size: 0.85rem; margin-top: 1rem; }
 
 /* ---------- Sponsors ---------- */

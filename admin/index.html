@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roster Admin | BD Elite</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../bdelite.css" />
+  <link rel="icon" type="image/png" href="../assets/bdelite-logo-512.png" />
+  <style>
+    .admin-wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.2rem 4rem; }
+    .card { background: var(--black-3); border: 1px solid rgba(232, 20, 28, 0.5); padding: 1.6rem; margin-bottom: 1.4rem; }
+    .card h2 { font-family: var(--font-display); font-size: 1.7rem; color: var(--white); margin-bottom: 0.3rem; }
+    .card h2 em { color: var(--red); font-style: normal; }
+    .muted { color: var(--gray); font-size: 0.92rem; }
+    .field { display: flex; flex-direction: column; margin-bottom: 0.9rem; }
+    .field label { font-family: var(--font-accent); letter-spacing: 0.1em; color: var(--red); font-size: 0.95rem; margin-bottom: 0.3rem; }
+    input, select { background: var(--black); border: 1px solid rgba(255,255,255,0.15); color: var(--silver); font: 1rem var(--font-body); padding: 0.6rem 0.8rem; width: 100%; }
+    input:focus, select:focus { outline: 2px solid var(--red); border-color: transparent; }
+    .btn-sm { font-size: 0.95rem; padding: 0.45rem 0.9rem; }
+    .btn-dark { background: var(--black); border: 1px solid rgba(255,255,255,0.2); color: var(--silver); }
+    .btn-dark:hover { border-color: var(--red); color: var(--red); }
+    .row-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .tab { font-family: var(--font-accent); letter-spacing: 0.1em; font-size: 1.1rem; padding: 0.5rem 1.1rem; border: 1px solid rgba(232,20,28,0.5); color: var(--silver); background: var(--black); cursor: pointer; }
+    .tab.active { background: var(--red); color: var(--white); border-color: var(--red); }
+    .players { display: grid; gap: 0.6rem; }
+    .player-row { display: grid; grid-template-columns: 64px 1fr 1fr 110px 1fr auto; gap: 0.5rem; align-items: center; background: var(--black); border: 1px solid rgba(255,255,255,0.08); padding: 0.6rem; }
+    .player-row.head { background: transparent; border: 0; padding: 0 0.6rem; font-family: var(--font-accent); letter-spacing: 0.1em; color: var(--red); font-size: 0.9rem; }
+    .player-row.new { border: 1px dashed rgba(232,20,28,0.6); }
+    .player-row input { padding: 0.45rem 0.6rem; font-size: 0.95rem; }
+    .status { margin-top: 0.8rem; min-height: 1.2em; font-size: 0.9rem; }
+    .status.ok { color: #6fd36f; } .status.err { color: var(--red); }
+    .editors li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.07); list-style: none; }
+    .editors li span { color: var(--silver); word-break: break-all; }
+    .inline-form { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+    .inline-form input { flex: 1; }
+    .divider { display: flex; align-items: center; gap: 0.8rem; color: var(--gray); font-size: 0.85rem; margin: 1rem 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-top: 1px solid rgba(255,255,255,0.1); }
+    .link-btn { background: none; border: 0; color: var(--red); cursor: pointer; font: inherit; text-decoration: underline; padding: 0; }
+    @media (max-width: 720px) {
+      .player-row, .player-row.head { grid-template-columns: 1fr 1fr; }
+      .player-row.head { display: none; }
+      .player-row input::placeholder { color: #6a6a74; }
+      .player-row .row-actions { grid-column: 1 / -1; }
+      .player-row .span2 { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav" id="top">
+    <div class="nav-inner">
+      <a class="brand" href="../">
+        <img src="../assets/bdelite-logo-512.png" alt="BD Elite logo" class="brand-logo" />
+        <span class="brand-name">BD <em>ELITE</em></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="../roster/8u/" target="_blank" rel="noopener">8U Page ↗</a>
+        <a href="../roster/10u/" target="_blank" rel="noopener">10U Page ↗</a>
+        <a href="../roster/18u/" target="_blank" rel="noopener">18U Page ↗</a>
+        <a href="../" class="nav-home">← Site</a>
+      </nav>
+      <button class="btn btn-dark btn-sm nav-cta is-hidden" id="signOutBtn">Sign Out</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+
+    <!-- ===== Loading ===== -->
+    <section id="viewLoading" class="card"><p class="muted">Checking your session…</p></section>
+
+    <!-- ===== Login ===== -->
+    <section id="viewLogin" class="card is-hidden">
+      <h2>ROSTER <em>ADMIN</em></h2>
+      <p class="muted" style="margin-bottom:1.2rem">Sign in with your TAYP account. Only approved editors can make changes.</p>
+      <form id="loginForm">
+        <div class="field"><label for="loginEmail">Email</label><input type="email" id="loginEmail" autocomplete="username" required /></div>
+        <div class="field"><label for="loginPass">Password</label><input type="password" id="loginPass" autocomplete="current-password" required /></div>
+        <button type="submit" class="btn btn-red btn-block">Sign In</button>
+      </form>
+      <div class="divider">or</div>
+      <button class="btn btn-dark btn-block" id="magicBtn">Email me a one-time sign-in link</button>
+      <p class="muted" style="margin-top:0.8rem"><button class="link-btn" id="forgotBtn">Forgot password?</button></p>
+      <p class="status" id="loginStatus"></p>
+    </section>
+
+    <!-- ===== Set new password (after reset link) ===== -->
+    <section id="viewRecovery" class="card is-hidden">
+      <h2>SET A NEW <em>PASSWORD</em></h2>
+      <form id="recoveryForm">
+        <div class="field"><label for="newPass">New password</label><input type="password" id="newPass" minlength="8" autocomplete="new-password" required /></div>
+        <button type="submit" class="btn btn-red btn-block">Save Password</button>
+      </form>
+      <p class="status" id="recoveryStatus"></p>
+    </section>
+
+    <!-- ===== Not an editor ===== -->
+    <section id="viewDenied" class="card is-hidden">
+      <h2>NOT <em>AUTHORIZED</em></h2>
+      <p class="muted">You're signed in as <strong id="deniedEmail"></strong>, but that email isn't on the BD Elite editor list. Ask the program owner to add you.</p>
+    </section>
+
+    <!-- ===== App ===== -->
+    <section id="viewApp" class="is-hidden">
+      <div class="card">
+        <div class="toolbar">
+          <div><h2>ROSTER <em>ADMIN</em></h2><p class="muted">Signed in as <span id="whoami"></span></p></div>
+          <a class="btn btn-dark btn-sm" href="../roster/8u/" target="_blank" rel="noopener" id="viewPageLink">View live page ↗</a>
+        </div>
+        <div class="tabs" id="teamTabs"></div>
+        <div class="players" id="players"></div>
+        <p class="status" id="playerStatus"></p>
+      </div>
+
+      <div class="card">
+        <h2>EDITOR <em>ACCESS</em></h2>
+        <p class="muted">Only these emails can sign in here and change rosters. They sign in with a TAYP account using the same email.</p>
+        <ul class="editors" id="editors"></ul>
+        <form class="inline-form" id="editorForm">
+          <input type="email" id="editorEmail" placeholder="name@email.com" required />
+          <button type="submit" class="btn btn-red btn-sm">Add Editor</button>
+        </form>
+        <p class="status" id="editorStatus"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="../bdelite.js"></script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_KEY } from '../js/supabase-config.js';
+
+    // Always fetch fresh data so edits show up immediately after saving.
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { global: { fetch: (url, opts = {}) => fetch(url, { ...opts, cache: 'no-store' }) } });
+    const $ = (id) => document.getElementById(id);
+    const views = ['viewLoading', 'viewLogin', 'viewRecovery', 'viewDenied', 'viewApp'];
+    const show = (id) => views.forEach((v) => $(v).classList.toggle('is-hidden', v !== id));
+    const status = (id, msg, ok = true) => { const el = $(id); el.textContent = msg; el.className = 'status ' + (msg ? (ok ? 'ok' : 'err') : ''); };
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const POSITIONS = ['QB', 'WR', 'RB', 'TE', 'C', 'DB', 'CB', 'S', 'LB', 'ATH'];
+
+    let teams = [], currentTeam = null, recovering = false;
+
+    // ---------- Auth ----------
+    async function route() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (recovering) { show('viewRecovery'); return; }
+      if (!session) { $('signOutBtn').classList.add('is-hidden'); show('viewLogin'); return; }
+      $('signOutBtn').classList.remove('is-hidden');
+      const { data: isEditor, error } = await sb.rpc('bdelite_is_editor');
+      if (error || !isEditor) { $('deniedEmail').textContent = session.user.email; show('viewDenied'); return; }
+      $('whoami').textContent = session.user.email;
+      await loadApp();
+      show('viewApp');
+    }
+
+    sb.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') recovering = true;
+      route();
+    });
+
+    $('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); status('loginStatus', 'Signing in…');
+      const { error } = await sb.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPass').value });
+      status('loginStatus', error ? error.message : '', !error);
+    });
+    $('magicBtn').addEventListener('click', async () => {
+      const email = $('loginEmail').value.trim();
+      if (!email) return status('loginStatus', 'Enter your email above first.', false);
+      const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + '/admin/', shouldCreateUser: false } });
+      status('loginStatus', error ? error.message : 'Check your email for a sign-in link.', !error);
+    });
+    $('forgotBtn').addEventListener('click', async () => {
+      const email = $('loginEmail').value.trim();
+      if (!email) return status('loginStatus', 'Enter your email above first.', false);
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/admin/' });
+      status('loginStatus', error ? error.message : 'Check your email for a password reset link.', !error);
+    });
+    $('recoveryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { error } = await sb.auth.updateUser({ password: $('newPass').value });
+      if (error) return status('recoveryStatus', error.message, false);
+      recovering = false; status('recoveryStatus', 'Password saved.'); route();
+    });
+    $('signOutBtn').addEventListener('click', async () => { await sb.auth.signOut(); location.hash = ''; route(); });
+
+    // ---------- Teams & players ----------
+    async function loadApp() {
+      const { data, error } = await sb.from('bdelite_teams').select('*').order('sort_order');
+      if (error) return status('playerStatus', error.message, false);
+      teams = data; currentTeam = currentTeam ?? teams[0]?.id;
+      renderTabs(); await loadPlayers(); await loadEditors();
+    }
+    function renderTabs() {
+      $('teamTabs').innerHTML = teams.map((t) => `<button class="tab ${t.id === currentTeam ? 'active' : ''}" data-id="${esc(t.id)}">${esc(t.name)}</button>`).join('');
+      $('teamTabs').querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => { currentTeam = b.dataset.id; renderTabs(); loadPlayers(); }));
+      $('viewPageLink').href = `../roster/${currentTeam}/`;
+    }
+    async function loadPlayers() {
+      const { data, error } = await sb.from('bdelite_players').select('*').eq('team_id', currentTeam)
+        .order('jersey_number', { ascending: true, nullsFirst: false }).order('last_name');
+      if (error) return status('playerStatus', error.message, false);
+      const team = teams.find((t) => t.id === currentTeam);
+      const rows = data.map((p) => playerRow(p)).join('');
+      $('players').innerHTML = `
+        <div class="player-row head"><span>#</span><span>First</span><span>Last</span><span>Pos</span><span>Note</span><span></span></div>
+        ${rows}
+        ${playerRow({}, true)}
+        <datalist id="posList">${POSITIONS.map((p) => `<option value="${p}">`).join('')}</datalist>`;
+      status('playerStatus', `${data.length} of ${team?.roster_size ?? '?'} ${team?.name ?? ''} spots filled.`);
+      $('players').querySelectorAll('[data-save]').forEach((b) => b.addEventListener('click', () => savePlayer(b.closest('.player-row'))));
+      $('players').querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => deletePlayer(b.dataset.del, b.closest('.player-row'))));
+      $('players').querySelectorAll('.player-row input').forEach((i) => i.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); savePlayer(i.closest('.player-row')); } }));
+    }
+    function playerRow(p, isNew = false) {
+      return `<div class="player-row ${isNew ? 'new' : ''}" data-id="${esc(p.id ?? '')}">
+        <input type="number" min="0" max="99" name="jersey_number" value="${esc(p.jersey_number ?? '')}" placeholder="#" />
+        <input type="text" name="first_name" value="${esc(p.first_name ?? '')}" placeholder="First name" maxlength="60" />
+        <input type="text" name="last_name" value="${esc(p.last_name ?? '')}" placeholder="Last name" maxlength="60" />
+        <input type="text" name="position" list="posList" value="${esc(p.position ?? '')}" placeholder="Pos" maxlength="30" />
+        <input type="text" name="note" class="span2" value="${esc(p.note ?? '')}" placeholder="Grade, height, etc. (optional)" maxlength="120" />
+        <div class="row-actions">
+          <button class="btn btn-red btn-sm" data-save>${isNew ? 'Add' : 'Save'}</button>
+          ${isNew ? '' : `<button class="btn btn-dark btn-sm" data-del="${esc(p.id)}">Delete</button>`}
+        </div>
+      </div>`;
+    }
+    function readRow(row) {
+      const v = (n) => row.querySelector(`[name=${n}]`).value.trim();
+      const num = v('jersey_number');
+      return { team_id: currentTeam, jersey_number: num === '' ? null : Number(num), first_name: v('first_name'), last_name: v('last_name'), position: v('position') || null, note: v('note') || null };
+    }
+    async function savePlayer(row) {
+      const p = readRow(row);
+      if (!p.first_name) return status('playerStatus', 'First name is required.', false);
+      const id = row.dataset.id;
+      const q = id ? sb.from('bdelite_players').update(p).eq('id', id) : sb.from('bdelite_players').insert(p);
+      const { error } = await q;
+      if (error) return status('playerStatus', error.message, false);
+      await loadPlayers(); status('playerStatus', id ? 'Saved — live on the site now.' : 'Player added — live on the site now.');
+    }
+    async function deletePlayer(id, row) {
+      const name = `${row.querySelector('[name=first_name]').value} ${row.querySelector('[name=last_name]').value}`.trim();
+      if (!confirm(`Remove ${name || 'this player'} from the ${currentTeam.toUpperCase()} roster?`)) return;
+      const { error } = await sb.from('bdelite_players').delete().eq('id', id);
+      if (error) return status('playerStatus', error.message, false);
+      await loadPlayers(); status('playerStatus', 'Player removed.');
+    }
+
+    // ---------- Editors ----------
+    async function loadEditors() {
+      const { data, error } = await sb.from('bdelite_editors').select('email, created_at').order('created_at');
+      if (error) return status('editorStatus', error.message, false);
+      $('editors').innerHTML = data.map((e) => `<li><span>${esc(e.email)}</span><button class="btn btn-dark btn-sm" data-remove="${esc(e.email)}">Remove</button></li>`).join('');
+      $('editors').querySelectorAll('[data-remove]').forEach((b) => b.addEventListener('click', () => removeEditor(b.dataset.remove)));
+    }
+    $('editorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = $('editorEmail').value.trim().toLowerCase();
+      const { data: { session } } = await sb.auth.getSession();
+      const { error } = await sb.from('bdelite_editors').insert({ email, added_by: session?.user?.email ?? null });
+      if (error) return status('editorStatus', error.code === '23505' ? 'That email is already an editor.' : error.message, false);
+      $('editorEmail').value = ''; await loadEditors(); status('editorStatus', `${email} can now sign in and edit rosters.`);
+    });
+    async function removeEditor(email) {
+      if (!confirm(`Remove editor access for ${email}?`)) return;
+      const { error } = await sb.from('bdelite_editors').delete().eq('email', email);
+      if (error) return status('editorStatus', error.message.includes('last editor') ? 'You can\'t remove the last editor.' : error.message, false);
+      await loadEditors(); status('editorStatus', `${email} removed.`);
+    }
+
+    route();
+  </script>
+</body>
+</html>

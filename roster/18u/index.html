@@ -42,7 +42,7 @@
   </section>
 
   <section class="section" id="roster">
-    <div class="roster-empty">
+    <div class="roster-empty" id="rosterEmpty">
       <div class="roster-empty-icon">🏈</div>
       <h2>The 18U squad hasn't been set yet.</h2>
       <p>Tryouts for the 2027 season are coming — once the team is picked, every player's name and number will be listed right here. Want in? Get on the tryout list and we'll hit you first when the date drops.</p>
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="roster-grid" aria-hidden="true">
+    <div class="roster-grid" id="rosterGrid" data-team="18u">
       <div class="roster-slot"><span class="roster-num">#</span><span class="roster-name">OPEN</span></div>
       <div class="roster-slot"><span class="roster-num">#</span><span class="roster-name">OPEN</span></div>
       <div class="roster-slot"><span class="roster-num">#</span><span class="roster-name">OPEN</span></div>
@@ -71,7 +71,7 @@
       <div class="roster-slot"><span class="roster-num">#</span><span class="roster-name">OPEN</span></div>
       <div class="roster-slot"><span class="roster-num">#</span><span class="roster-name">OPEN</span></div>
     </div>
-    <p class="roster-note">Positions will be filled at tryouts.</p>
+    <p class="roster-note" id="rosterNote">Positions will be filled at tryouts.</p>
   </section>
 
   <footer class="footer">
@@ -82,5 +82,6 @@
   </footer>
 
   <script src="../../bdelite.js"></script>
+  <script type="module" src="../../js/roster.js"></script>
 </body>
 </html>
